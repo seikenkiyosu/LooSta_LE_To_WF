@@ -1,6 +1,6 @@
 package Agent;
 public class Agent {
-	public static final int s = 400;			//96à»è„Ç≈3nà»è„
+	public static final int s = 192;			//96à»è„Ç≈3nà»è„
 	
 	private boolean leader;
 	private int timer;
