@@ -1,6 +1,5 @@
 package Agent;
 public class Agent {
-	public static final int s = 192;			//96à»è„Ç≈3nà»è„
 	
 	private boolean leader;
 	private int timer;
@@ -10,9 +9,9 @@ public class Agent {
 	private double vy;
 	
 	
-	public Agent(boolean initleader, double inix, double iniy) {
+	public Agent(boolean initleader, int timerset, double inix, double iniy) {
 		this.leader = initleader;	
-		this.timer = s;
+		this.timer = timerset;
 		this.x = inix; this.y = iniy;
 		this.vx = 0; this.vy = 0;
 	}
@@ -50,8 +49,8 @@ public class Agent {
 		else return false;
 	}
 	
-	public void TimerReset(){
-		this.timer = s;
+	public void TimerReset(int timerset){
+		this.timer = timerset;
 	}
 	
 	public void TimerForRule5(int f){
