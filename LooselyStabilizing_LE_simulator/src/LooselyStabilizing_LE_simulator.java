@@ -1,145 +1,135 @@
+//ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì‚ï¿½ï¿½ß‚Ìƒpï¿½bï¿½Pï¿½[ï¿½W
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Random;
 
 import Agent.Agent;
 import Interaction.Interaction;
-import RandamPackage.*;
-
-//ƒtƒ@ƒCƒ‹‚Ì‚½‚ß‚ÌƒpƒbƒP[ƒW
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.IOException;
-
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import RandamPackage.RandomWay;
 
 class LooselyStabilizing_LE_simulator{
-	public static final int Gridsize = 50;
 	public static final int Roundnum = 1000000;
-	
-	public static final int DataNum = 100;
-	
-	public static final int s = 192;			//96ˆÈã‚Å3nˆÈã
-	
-	public static final int n_from = 10;	//s‚É‘Î‚µ‚ÄAn_from‚©‚çn_to‚Ü‚Å‚Ìn‚ğ‘‚«o‚·
-	public static final int n_to = 64;
-	
+
+	public static final int DataNum = 10;
+
+	public static final int s = 96;			//96ï¿½Èï¿½ï¿½3nï¿½Èï¿½
+
+	public static final int n_from = 20;	//sï¿½É‘Î‚ï¿½ï¿½ÄAn_fromï¿½ï¿½ï¿½ï¿½n_toï¿½Ü‚Å‚ï¿½nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½
+	public static final int n_to = 32;
+
+	public static final int Vset = 1;
+	public static final int DistanceforInteraction = 1;
+	public static final int Gridsize = 50;
+
+	public static String RandomMethod = "Torus";
+	public static String CoodinateSystem = "Rectanglar";
+
+	public static String DataPath = "\\Users\\seikenkiyosu\\Dropbox\\Data\\";
+	public static String WritingPath = DataPath + "Data_" + RandomMethod + "\\" + CoodinateSystem + "\\"
+			+ "Data_" + RandomMethod + "_" + Vset + "V_" + DistanceforInteraction + "DI_" + Gridsize + "GS\\";
+
 	public static void main(String args[]){
 		Random random = new Random();
 		int CTcounter;
 		int CT, HT;
 		int SPperRound[] = new int[Roundnum];
-		
+
+        File file = new File(WritingPath);
+        if (!file.exists()) {
+            System.out.println("ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒå­˜åœ¨ã—ã¾ã›ã‚“ã€‚");
+            System.exit(-1);
+        }
+
 		for(int n=n_from; n<=n_to; n++){
-			System.out.println("n number = " + n);
-			
+
 			Agent agent[] = new Agent[n];
 			int CTsum=0, HTsum=0;
 			double CTave=0.0 , HTave=0.0;
-			
-			/*‚±‚±‚©‚çƒVƒ…ƒ~ƒŒ[ƒg‚Æƒtƒ@ƒCƒ‹‘‚«‚İ*/
+
+			/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½~ï¿½ï¿½ï¿½[ï¿½gï¿½Æƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 			for(int Data=0; Data < DataNum; Data++){
-				System.out.println("(n:" + n_from + "~" + n_to + "," + "Datanum:" + DataNum + ")"
-						+ " n = " + n
-						+ ", Data number = " +Data);
+
 				CTcounter = CT = HT = 0;
-			
+
 				for(int i=0; i<n; i++)
-				agent[i] = new Agent(random.nextBoolean(), s, random.nextInt(Gridsize)+random.nextDouble(), random.nextInt(Gridsize)+random.nextDouble());
-				
+				agent[i] = new Agent(random.nextBoolean(), s, random.nextInt(Gridsize-1)+random.nextDouble(), random.nextInt(Gridsize-1)+random.nextDouble());
+
 				for(int i=0; i<Roundnum; i++){
 						int leadercount=0;
 						int leaderid=0;
 						for(int j=0; j<n; j++) if(agent[j].IsLeader()){ leaderid = j; leadercount++; }
-						if(leadercount==1){ 
+						if(leadercount==1){
 								SPperRound[i] = leaderid;
-								if(i>0)//ˆê”ÔÅ‰‚ÉƒŠ[ƒ_ˆêŒÂ‚â‚Á‚½‚ç‚Î‚®‚é‚©‚çi>0
-								if(SPperRound[i-1]==leaderid){	
+								if(i>0)//ï¿½ï¿½ÔÅï¿½ï¿½Éƒï¿½ï¿½[ï¿½_ï¿½ï¿½Â‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î‚ï¿½ï¿½é‚©ï¿½ï¿½i>0
+								if(SPperRound[i-1]==leaderid){
 									HT++;
 								}
 								else{
 									HT = 0; CT = CTcounter;
-//									System.out.println(leaderid); 	//ƒŠ[ƒ_‚Ìid‚ğƒvƒŠƒ“ƒg
+//									System.out.println(leaderid); 	//ï¿½ï¿½ï¿½[ï¿½_ï¿½ï¿½idï¿½ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½g
 								}
 							}
 //						System.out.println("the number of leaders = " + leadercount);
 						int p, q;
-						while(true){					//Œğ—¬‚³‚¹‚éŒÂ‘Ì‚ğ‘I‚Ô
-							p = random.nextInt(n-1);		//ƒ‰ƒ“ƒ_ƒ€‚Éagent‚ğ‚Æ‚Á‚Ä‚­‚é
-							q = RandomWay.RandamPickNearAgent( p, n, agent);		//p‚Æ‹——£1ˆÈ“à‚É‚ ‚éƒm[ƒh‚Ì’†‚Å(ˆê”Ôid‚Ì’á‚¢)ƒm[ƒh‚ğq‚É‘ã“ü
-							if(q != -1) { 	//q‚ªŒ©‚Â‚©‚Á‚½‚çinteraction‚ğ‚µ‚ÄŸ‚Ìƒ‰ƒEƒ“ƒh‚Ö
-								Interaction.interaction(agent[p], agent[q], s);	//Œğ—¬‚³‚¹‚é
-								for(int j=0; j<n; j++) agent[j].Countdown();	//timer‚ğƒJƒEƒ“ƒg‚·‚é
-								break;						//Ÿ‚Ìƒ‰ƒEƒ“ƒh‚Ö
+						while(true){					//ï¿½ğ—¬‚ï¿½ï¿½ï¿½ï¿½ï¿½Â‘Ì‚ï¿½Iï¿½ï¿½
+							p = random.nextInt(n-1);		//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½agentï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½
+							q = RandomWay.RandamPickNearAgent( p, n, agent, DistanceforInteraction);		//pï¿½Æ‹ï¿½ï¿½ï¿½1ï¿½È“ï¿½ï¿½É‚ï¿½ï¿½ï¿½mï¿½[ï¿½hï¿½Ì’ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½idï¿½Ì’á‚¢)ï¿½mï¿½[ï¿½hï¿½ï¿½qï¿½É‘ï¿½ï¿½
+							if(q != -1) { 	//qï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½interactionï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½Ìƒï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½
+								Interaction.interaction(agent[p], agent[q], s);	//ï¿½ğ—¬‚ï¿½ï¿½ï¿½ï¿½ï¿½
+								for(int j=0; j<n; j++) agent[j].Countdown();	//timerï¿½ï¿½ï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½
+								break;						//ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Eï¿½ï¿½ï¿½hï¿½ï¿½
 							}
-							for(int j=0; j<n; j++){					//ŠeŒÂ‘ÌˆÚ“®
-								agent[j].Vchange((random.nextDouble()-0.5)*2 , (random.nextDouble()-0.5)*2 );
+							for(int j=0; j<n; j++){					//ï¿½eï¿½Â‘ÌˆÚ“ï¿½
+								agent[j].Vchange((random.nextInt(2*Vset-1)-Vset)+random.nextDouble() , (random.nextInt(2*Vset-1)-Vset)+random.nextDouble() );
 								agent[j].ShiftPointForTorus(Gridsize);
 							}
 						}
 						CTcounter++;
-						if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//HT‚ªI‚í‚Á‚Ä‚ç‘¦I—¹‚µ‚½‚©‚Á‚½
+						if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//HTï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½Ä‚ç‘¦ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					}
 //					System.out.println("CT = " + CT);
 //					System.out.println("HT = " + HT);
-					
-					/*CTAHT‚Ìƒf[ƒ^‚ğƒtƒ@ƒCƒ‹‚É‘‚«‚Ş‚½‚ß‚Ìˆ—*/
-				    try{
-				    	String svalue = new Integer(s).toString();
-				    	String nvalue = new Integer(n).toString();
-				    	
-				        File fileCT = new File("src\\Data\\CT_s=" + svalue + "\\n=" + nvalue + ".txt");
-				        File fileHT = new File("src\\Data\\HT_s=" + svalue + "\\n=" + nvalue + ".txt");
-				        
-				        if(!fileCT.exists()){ fileCT.createNewFile(); }
-				        if(!fileHT.exists()){ fileHT.createNewFile(); }
-			
-				        PrintWriter pwCT = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileCT, true)));
-				        PrintWriter pwHT = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileHT, true)));
-				        
-				        String stringCT = Integer.toString(CT);
-				        String stringHT = Integer.toString(HT);
-				        
-				        pwCT.write(stringCT + "\r\n");
-				        pwHT.write(stringHT + "\r\n");
-				          
-				        pwCT.close();
-				        pwHT.close();
-			
-				      }catch(IOException e){
-				        System.out.println(e);
-				      }
+
+
 				   CTsum += CT;
 				   HTsum += HT;
-			}	//for(int Data=0; Data < DataNum; Data++) I‚í‚è
+					System.out.println("(n:" + n_from + "~" + n_to + "," + "Datanum:" + DataNum + ")"
+							+ "\tn = " + n
+							+ ",\tData number = " + (Data+1)
+							+ ",\tCT = " + CT + ",\tHT = " + HT);
+			}	//for(int Data=0; Data < DataNum; Data++) ï¿½Iï¿½ï¿½ï¿½
 			CTave = (double)CTsum / DataNum;
 			HTave = (double)HTsum / DataNum;
-			/*•½‹Ï‚ğƒtƒ@ƒCƒ‹‚É‘‚«‚Ş*/
-			try{	
+			/*ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+			try{
 				String svalue = new Integer(s).toString();
 				String nfromvalue = new Integer(n_from).toString();
 				String ntovalue = new Integer(n_to).toString();
-		    	
-		        File fileCT = new File("src\\Data\\CT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
-		        File fileHT = new File("src\\Data\\HT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
-		        
+
+		        File fileCT = new File(WritingPath + RandomMethod + "_" + CoodinateSystem + "_CT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
+		        File fileHT = new File(WritingPath + RandomMethod + "_" + CoodinateSystem + "_HT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
+
 		        if(!fileCT.exists()){ fileCT.createNewFile(); }
 		        if(!fileHT.exists()){ fileHT.createNewFile(); }
-	
+
 		        PrintWriter pwCT = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileCT, true)));
 		        PrintWriter pwHT = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileHT, true)));
-		        
+
 		        String stringCTave = String.valueOf(CTave);
 		        String stringHTave = String.valueOf(HTave);
-		        
+
 		        pwCT.write(stringCTave + "\r\n");
 		        pwHT.write(stringHTave + "\r\n");
-		          
+
 		        pwCT.close();
 		        pwHT.close();
-	
+
 		      }catch(IOException e){
 		        System.out.println(e);
 		      }
-		}//for(int n=n_from; n<=n_to; n++) I‚í‚è
-	}	//ƒƒCƒ“I‚í‚è
-}	//ƒNƒ‰ƒXI‚í‚è
+		}//for(int n=n_from; n<=n_to; n++) ï¿½Iï¿½ï¿½ï¿½
+	}	//ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½
+}	//ï¿½Nï¿½ï¿½ï¿½Xï¿½Iï¿½ï¿½ï¿½
