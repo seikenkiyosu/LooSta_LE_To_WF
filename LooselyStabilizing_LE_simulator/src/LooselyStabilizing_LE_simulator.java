@@ -11,14 +11,14 @@ import Interaction.Interaction;
 import RandamPackage.RandomWay;
 
 class LooselyStabilizing_LE_simulator{
-	public static final int Roundnum = 1000000;
+	public static final int Roundnum = 10000000;
 
 	public static final int s = 96;			//96�ȏ��3n�ȏ�
 
 	public static final int n_from = 20;	//s�ɑ΂��āAn_from����n_to�܂ł�n�������o��
 	public static final int n_to = 32;
 
-	public static final int Vset = 1;
+	public static final int Vset = 10;
 	public static final int DistanceforInteraction = 1;
 	public static final int Gridsize = 50;
 	public static final int DataNum = 100;
@@ -56,7 +56,7 @@ class LooselyStabilizing_LE_simulator{
 				CTcounter = CT = HT = 0;
 
 				for(int i=0; i<n; i++)
-				agent[i] = new Agent(random.nextBoolean(), s, random.nextInt(Gridsize-1)+random.nextDouble(), random.nextInt(Gridsize-1)+random.nextDouble());
+				agent[i] = new Agent(random.nextBoolean(), s, random.nextInt(Gridsize)+random.nextDouble(), random.nextInt(Gridsize)+random.nextDouble());
 
 				for(int i=0; i<Roundnum; i++){
 						int leadercount=0;
@@ -76,7 +76,7 @@ class LooselyStabilizing_LE_simulator{
 //						System.out.println("the number of leaders = " + leadercount);
 						int p, q;
 						while(true){					//�𗬂�����̂�I��
-							p = random.nextInt(n-1);		//�����_����agent���Ƃ��Ă���
+							p = random.nextInt(n);		//�����_����agent���Ƃ��Ă���
 							q = RandomWay.RandamPickNearAgent( p, n, agent, DistanceforInteraction);		//p�Ƌ���1�ȓ��ɂ���m�[�h�̒���(���id�̒Ⴂ)�m�[�h��q�ɑ��
 							if(q != -1) { 	//q������������interaction�����Ď��̃��E���h��
 								Interaction.interaction(agent[p], agent[q], s);	//�𗬂�����
@@ -110,8 +110,10 @@ class LooselyStabilizing_LE_simulator{
 				String nfromvalue = new Integer(n_from).toString();
 				String ntovalue = new Integer(n_to).toString();
 
-		        File fileCT = new File(WritingPath + RandomMethod + "_" + CoodinateSystem + "_CT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
-		        File fileHT = new File(WritingPath + RandomMethod + "_" + CoodinateSystem + "_HT_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue + ".txt");
+		        File fileCT = new File(WritingPath + "CT_" + "_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue
+		        		+ RandomMethod + CoodinateSystem + Vset + "V_" + DistanceforInteraction + "DI_" + Gridsize + "GS_" + DataNum + "DN" + "_" + ".txt");
+		        File fileHT = new File(WritingPath + "HT_" + "_s=" + svalue + "_n=from" + nfromvalue + "to" + ntovalue
+		        		+ RandomMethod + CoodinateSystem + Vset + "V_" + DistanceforInteraction + "DI_" + Gridsize + "GS_" + DataNum + "DN" + "_" + ".txt");
 
 		        if(!fileCT.exists()){ fileCT.createNewFile(); }
 		        if(!fileHT.exists()){ fileHT.createNewFile(); }
