@@ -13,8 +13,6 @@ import RandamPackage.RandomWay;
 class LooselyStabilizing_LE_simulator{
 	public static final int Roundnum = 1000000;
 
-	public static final int DataNum = 10;
-
 	public static final int s = 96;			//96�ȏ��3n�ȏ�
 
 	public static final int n_from = 20;	//s�ɑ΂��āAn_from����n_to�܂ł�n�������o��
@@ -23,20 +21,23 @@ class LooselyStabilizing_LE_simulator{
 	public static final int Vset = 1;
 	public static final int DistanceforInteraction = 1;
 	public static final int Gridsize = 50;
+	public static final int DataNum = 100;
 
 	public static String RandomMethod = "Torus";
 	public static String CoodinateSystem = "Rectanglar";
-
-	public static String DataPath = "\\Users\\seikenkiyosu\\Dropbox\\Data\\";
+	public static String name = "星顕";
+	//System.getProperty("user.name");
+	
+	public static String DataPath = "\\Users\\" + name + "\\Dropbox\\Data\\";
 	public static String WritingPath = DataPath + "Data_" + RandomMethod + "\\" + CoodinateSystem + "\\"
-			+ "Data_" + RandomMethod + "_" + Vset + "V_" + DistanceforInteraction + "DI_" + Gridsize + "GS\\";
+			+ RandomMethod + "_" + Vset + "V_" + DistanceforInteraction + "DI_" + Gridsize + "GS_" + DataNum + "DN\\";
 
 	public static void main(String args[]){
 		Random random = new Random();
 		int CTcounter;
 		int CT, HT;
 		int SPperRound[] = new int[Roundnum];
-
+		
         File file = new File(WritingPath);
         if (!file.exists()) {
             System.out.println("ディレクトリが存在しません。");
