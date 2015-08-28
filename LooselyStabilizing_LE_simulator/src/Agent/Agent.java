@@ -21,12 +21,12 @@ public class Agent {
 	public double getx(){ return this.x; }
 	public double gety(){ return this.y; }
 	
-	public void ShiftPointForRWP(){		//ƒ‰ƒ“ƒ_ƒ€ƒEƒFƒCƒ|ƒCƒ“ƒg‚Å‚Ìˆê•bŠÔ‚Ìshift
+	public void ShiftPointForRWP(){		//ãƒ©ãƒ³ãƒ€ãƒ ã‚¦ã‚§ã‚¤ãƒã‚¤ãƒ³ãƒˆã«ã‚ˆã‚‹Agentã®ç§»å‹•
 		this.x += this.vx;
 		this.y += this.vy;
 	}
 	
-	public void ShiftPointForTorus(int Gridsize){	//ƒg[ƒ‰ƒX“à‚Å‚Ìˆê•bŠÔ‚Ìshift
+	public void ShiftPointForTorus(int Gridsize){	//ãƒˆãƒ¼ãƒ©ã‚¹ã‚’ç”¨ã„ãŸãƒ©ãƒ³ãƒ€ãƒ ã®ç§»å‹•
 		this.x += this.vx;
 		if(this.x > Gridsize) this.x %= Gridsize;
 		if(this.x <  0) this.x += Gridsize;
@@ -35,7 +35,7 @@ public class Agent {
 		if(this.y <  0) this.y += Gridsize;
 	}
 	
-	public void Vchange(double ax, double ay){	//‘¬“x•Ï‰»
+	public void Vchange(double ax, double ay){	//é€Ÿåº¦å¤‰åŒ–
 		this.vx = ax;
 		this.vy = ay;
 	}
@@ -61,7 +61,7 @@ public class Agent {
 		this.leader = isleader;
 	}
 	
-	public void ShowPoint() {		//Œ»Ý‚ÌÀ•W‚ð•\Ž¦
+	public void ShowPoint() {		//Agentã®ç¾åœ¨ã®åº§æ¨™ã‚’è¡¨ç¤º
 		System.out.print("x = " + this.x);
 		System.out.println("\t\ty = " + this.y);
 	}

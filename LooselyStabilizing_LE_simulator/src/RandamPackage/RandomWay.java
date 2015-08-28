@@ -11,7 +11,7 @@ public class RandomWay {
 			randompoint = random.nextInt(n);
 			if(p!=randompoint){
 				if((agent[p].getx() - agent[randompoint].getx())*(agent[p].getx() - agent[randompoint].getx())
-						+(agent[p].gety() - agent[randompoint].gety())*(agent[p].gety() - agent[randompoint].gety()) <= DI)
+						+(agent[p].gety() - agent[randompoint].gety())*(agent[p].gety() - agent[randompoint].gety()) <= DI)	//半径DIのなかにid=randompointのAgentが存在するとき
 				return randompoint;
 			}
 		}

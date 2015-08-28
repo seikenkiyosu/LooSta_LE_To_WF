@@ -10,21 +10,21 @@ import Agent.Agent;
 import Interaction.Interaction;
 import RandamPackage.RandomWay;
 
-class LooselyStabilizing_LE_simulator{
-	public static final int Roundnum = 10000000;
+class LooselyStabilizing_LE_simulator_writngfile{
+	public static final int Roundnum = 10000000;	//round数の上界
 
-	public static final int s = 96;			//96�ȏ��3n�ȏ�
+	public static final int s = 192;		//nの上限(agent.timerの初期値)
 
-	public static final int n_from = 20;	//s�ɑ΂��āAn_from����n_to�܂ł�n�������o��
-	public static final int n_to = 32;
+	public static final int n_from = 30;	//nはn_from～n_toのデータをとる
+	public static final int n_to = 64;		
 
-	public static final int Vset = 10;
-	public static final int DistanceforInteraction = 1;
-	public static final int Gridsize = 50;
-	public static final int DataNum = 100;
+	public static final int Vset = 1;	//vの速度の上限
+	public static final int DistanceforInteraction = 1;	//interactionができる距離
+	public static final int Gridsize = 50;	//フィールドのサイズ(Gridsize*Gridsizeの正方形)
+	public static final int DataNum = 100;	//データ数
 
-	public static String RandomMethod = "Torus";
-	public static String CoodinateSystem = "Rectanglar";
+	public static String RandomMethod = "Torus";	//Torus or RWP(Random Way Point)
+	public static String CoodinateSystem = "Rectanglar";	//直交座標(Rectanglar) or 極座標(Polar)
 	public static String name = "星顕";
 	//System.getProperty("user.name");
 	
@@ -50,7 +50,7 @@ class LooselyStabilizing_LE_simulator{
 			int CTsum=0, HTsum=0;
 			double CTave=0.0 , HTave=0.0;
 
-			/*��������V���~���[�g�ƃt�@�C����������*/
+			/*DataNum個のDataの平均をファイルに保存する*/
 			for(int Data=0; Data < DataNum; Data++){
 
 				CTcounter = CT = HT = 0;
@@ -64,35 +64,33 @@ class LooselyStabilizing_LE_simulator{
 						for(int j=0; j<n; j++) if(agent[j].IsLeader()){ leaderid = j; leadercount++; }
 						if(leadercount==1){
 								SPperRound[i] = leaderid;
-								if(i>0)//��ԍŏ��Ƀ��[�_��������΂��邩��i>0
+								if(i>0)//はじめからリーダが１個だったときのため
 								if(SPperRound[i-1]==leaderid){
 									HT++;
 								}
 								else{
 									HT = 0; CT = CTcounter;
-//									System.out.println(leaderid); 	//���[�_��id���v�����g
+//									System.out.println(leaderid); 	//リーダのidを返す
 								}
 							}
 //						System.out.println("the number of leaders = " + leadercount);
 						int p, q;
-						while(true){					//�𗬂�����̂�I��
-							p = random.nextInt(n);		//�����_����agent���Ƃ��Ă���
+						while(true){					//リーダが決定するまで
+							p = random.nextInt(n);		//interactionをするagentをランダムで選択
 							q = RandomWay.RandamPickNearAgent( p, n, agent, DistanceforInteraction);		//p�Ƌ���1�ȓ��ɂ���m�[�h�̒���(���id�̒Ⴂ)�m�[�h��q�ɑ��
-							if(q != -1) { 	//q������������interaction�����Ď��̃��E���h��
-								Interaction.interaction(agent[p], agent[q], s);	//�𗬂�����
-								for(int j=0; j<n; j++) agent[j].Countdown();	//timer���J�E���g����
-								break;						//���̃��E���h��
+							if(q != -1) { 	//pの周りにinteractionが可能なAgentが見つかったとき
+								Interaction.interaction(agent[p], agent[q], s);	
+								for(int j=0; j<n; j++) agent[j].Countdown();	//交流したagentのtimerをデクリメント
+								break;						//次のラウンドへ
 							}
-							for(int j=0; j<n; j++){					//�e�̈ړ�
-								agent[j].Vchange((random.nextInt(2*Vset-1)-Vset)+random.nextDouble() , (random.nextInt(2*Vset-1)-Vset)+random.nextDouble() );
-								agent[j].ShiftPointForTorus(Gridsize);
+							for(int j=0; j<n; j++){					//各Agentをランダムに移動させる
+								agent[j].Vchange((random.nextInt(2*Vset)-Vset)+random.nextDouble() , (random.nextInt(2*Vset)-Vset)+random.nextDouble() );
+								agent[j].ShiftPointForTorus(Gridsize);	//移動
 							}
 						}
 						CTcounter++;
-						if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//HT���I����Ă瑦�I������������
+						if(CT!=0 && HT!=0 && HT+CT+1 < CTcounter) break;	//リーダが決まった瞬間処理を抜けたかった
 					}
-//					System.out.println("CT = " + CT);
-//					System.out.println("HT = " + HT);
 
 
 				   CTsum += CT;
@@ -101,10 +99,10 @@ class LooselyStabilizing_LE_simulator{
 							+ "\tn = " + n
 							+ ",\tData number = " + (Data+1)
 							+ ",\tCT = " + CT + ",\tHT = " + HT);
-			}	//for(int Data=0; Data < DataNum; Data++) �I���
+			}	//for(int Data=0; Data < DataNum; Data++) 終了
 			CTave = (double)CTsum / DataNum;
 			HTave = (double)HTsum / DataNum;
-			/*���ς��t�@�C���ɏ�������*/
+			/*ファイル書き込みのための処理*/
 			try{
 				String svalue = new Integer(s).toString();
 				String nfromvalue = new Integer(n_from).toString();
@@ -133,6 +131,6 @@ class LooselyStabilizing_LE_simulator{
 		      }catch(IOException e){
 		        System.out.println(e);
 		      }
-		}//for(int n=n_from; n<=n_to; n++) �I���
-	}	//���C���I���
-}	//�N���X�I���
+		}//for(int n=n_from; n<=n_to; n++) 終了
+	}	//メイン終了
+}	//クラス終了
