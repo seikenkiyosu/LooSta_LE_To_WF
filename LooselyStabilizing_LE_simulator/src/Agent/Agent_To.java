@@ -1,5 +1,5 @@
 package Agent;
-public class Agent {
+public class Agent_To {
 	
 	private boolean leader;
 	private int timer;
@@ -9,7 +9,7 @@ public class Agent {
 	private double vy;
 	
 	
-	public Agent(boolean initleader, int timerset, double inix, double iniy) {
+	public Agent_To(boolean initleader, int timerset, double inix, double iniy) {
 		this.leader = initleader;	
 		this.timer = timerset;
 		this.x = inix; this.y = iniy;

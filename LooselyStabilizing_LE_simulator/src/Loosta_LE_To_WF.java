@@ -6,11 +6,11 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Random;
 
-import Agent.Agent;
-import Interaction.Interaction;
-import RandamPackage.RandomWay;
+import Agent.Agent_To;
+import Interaction.Interaction_To;
+import RandamPackage.RandomWay_To;
 
-class LooselyStabilizing_LE_simulator_writngfile{
+class Loosta_LE_To_WF{
 	public static final int Roundnum = 10000000;	//round数の上界
 
 	public static final int s = 200;		//nの上限(agent.timerの初期値)
@@ -42,7 +42,7 @@ class LooselyStabilizing_LE_simulator_writngfile{
         }
 
 		for(int n=n_from; n<=n_to; n++){
-			Agent agent[] = new Agent[n];
+			Agent_To agent[] = new Agent_To[n];
 			int CTsum=0, HTsum=0;
 			double CTave=0.0 , HTave=0.0;
 
@@ -52,7 +52,7 @@ class LooselyStabilizing_LE_simulator_writngfile{
 				boolean HT_count_flag = false, CT_count_flag = true;
 
 				for(int i=0; i<n; i++)
-				agent[i] = new Agent(random.nextBoolean(), s, random.nextInt(Gridsize)+random.nextDouble(), random.nextInt(Gridsize)+random.nextDouble());
+				agent[i] = new Agent_To(random.nextBoolean(), s, random.nextInt(Gridsize)+random.nextDouble(), random.nextInt(Gridsize)+random.nextDouble());
 
 				for(int i=0; i<Roundnum; i++){
 					int leadercount=0;
@@ -73,9 +73,9 @@ class LooselyStabilizing_LE_simulator_writngfile{
 					int p, q;
 					while(true){					//リーダが決定するまで
 						p = random.nextInt(n);		//interactionをするagentをランダムで選択
-						q = RandomWay.RandamPickNearAgent( p, n, agent, DistanceforInteraction);		//p�Ƌ���1�ȓ��ɂ���m�[�h�̒���(���id�̒Ⴂ)�m�[�h��q�ɑ��
+						q = RandomWay_To.RandamPickNearAgent( p, n, agent, DistanceforInteraction);		//p�Ƌ���1�ȓ��ɂ���m�[�h�̒���(���id�̒Ⴂ)�m�[�h��q�ɑ��
 						if(q != -1) { 	//pの周りにinteractionが可能なAgentが見つかったとき
-							Interaction.interaction(agent[p], agent[q], s);	
+							Interaction_To.interaction(agent[p], agent[q], s);	
 							for(int j=0; j<n; j++) agent[j].Countdown();	//交流したagentのtimerをデクリメント
 							break;						//次のラウンドへ
 						}

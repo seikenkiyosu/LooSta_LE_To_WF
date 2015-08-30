@@ -1,10 +1,10 @@
 package RandamPackage;
 
 import java.util.Random;
-import Agent.Agent;
+import Agent.Agent_To;
 
-public class RandomWay {
-	public static int RandamPickNearAgent(int p, int n, Agent agent[], int DI){
+public class RandomWay_To {
+	public static int RandamPickNearAgent(int p, int n, Agent_To agent[], int DI){
 		Random random = new Random();
 		int randompoint;
 		for(int i=0; i<3*n; i++){

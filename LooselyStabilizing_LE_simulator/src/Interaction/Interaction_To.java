@@ -1,8 +1,8 @@
 package Interaction;
-import Agent.Agent;
+import Agent.Agent_To;
 
-public class Interaction {
-	public static void interaction(Agent P, Agent Q, int s){
+public class Interaction_To {
+	public static void interaction(Agent_To P, Agent_To Q, int s){
 		//Rule1
 		if(P.IsLeader() && Q.IsLeader()){ 
 			P.TimerReset(s); Q.TimerReset(s); 
